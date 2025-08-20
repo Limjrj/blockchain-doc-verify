@@ -1,0 +1,18 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Local env & secrets
+.env
+
+# Artifacts & manifests produced by scripts
+artifacts/contract_address.json
+batch_*.json
+
+# Common editor cruft
+.DS_Store
+
+# (optional) If you later add JS tooling:
+node_modules/

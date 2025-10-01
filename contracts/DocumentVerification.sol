@@ -37,9 +37,11 @@ import {AccessControl}      from "@openzeppelin/contracts/access/AccessControl.s
 import {Pausable}           from "@openzeppelin/contracts/utils/Pausable.sol";
 import {ReentrancyGuard}    from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import {ECDSA}              from "@openzeppelin/contracts/utils/cryptography/ECDSA.sol";
+import {MessageHashUtils}   from "@openzeppelin/contracts/utils/cryptography/MessageHashUtils.sol";
 
 contract DocumentVerification is AccessControl, Pausable, ReentrancyGuard{
     using ECDSA for bytes32;
+    using MessageHashUtils for bytes32;
 
     // ---- Roles ----
     bytes32 public constant ISSUER_ROLE = keccak256("ISSUER_ROLE");
@@ -116,7 +118,7 @@ contract DocumentVerification is AccessControl, Pausable, ReentrancyGuard{
             block.chainid
         ));
 
-        bytes32 ethSigned = ECDSA.toEthSignedMessageHash(digest);
+        bytes32 ethSigned = digest.toEthSignedMessageHash();
         address signer = ECDSA.recover(ethSigned, signature);
 
         if(signer==address(0)) revert BadSignature();
